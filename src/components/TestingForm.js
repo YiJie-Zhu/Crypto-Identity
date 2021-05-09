@@ -133,63 +133,69 @@ const TestingForm = ()  => {
           Applicant's Information
         </Typography>
           <form className={classes.form} noValidate onSubmit = {handleSubmit}>
-            <Grid container spacing={4}>
-                <Grid item md={300}>
+            <Grid container spacing={2}>
+                <Grid item  xs={12} sm={6}>
                 <TextField
                     variant="outlined"
                     required
                     id="firstName"
                     label="First Name"
                     name="firstName"
+                    fullWidth
                     onChange={(e) => setfirstName(e.target.value)}
                 />
                 </Grid>
-                <Grid item md={100}>
+                <Grid item xs={12} sm={6}>
                 <TextField
                     variant="outlined"
                     name="otherName"
                     label="Other/Preferred Names"
                     id="otherName"
+                    fullWidth
                     onChange={(e) => setOtherName(e.target.value)}
                 />
                 </Grid>
-                <Grid item md={300}>
+                <Grid item xs={12} sm={6}>
                 <TextField
                     variant="outlined"
                     required
                     name="lastName"
                     label="Last Name"
                     id="lastName"
+                    fullWidth
                     onChange={(e) => setLastName(e.target.value)}
                 />
                 </Grid>
-                <Grid item md={300}>
+                <Grid item  xs={12} sm={6}>
                 <TextField
                     variant="outlined"
                     name="familyNameAB"
                     label="Family Name at Birth"
                     id="familyNameAB"
+                    fullWidth
                     onChange={(e) => setFamilyNameAB(e.target.value)}
                 />
                 </Grid>
-                <Grid item md={100}>
+                <Grid item  xs={12} sm={6}>
                 <TextField
                     variant="outlined"
                     required
                     name="dob"
                     label="Date of Birth"
                     id="dob"
+                    fullWidth
                     helperText='MM/DD/YYYY'
                     onChange={(e) => setDOB(e.target.value)}
                 />
                 </Grid>
-                <Grid item md={100}>
+                <Grid item xs={12} sm={6}>
                 <TextField
                     variant="outlined"
                     required
                     name="age"
                     label="Age"
                     id="age"
+                    fullWidth
                     onChange={(e) => setAge(e.target.value)}
                 />
                 </Grid>
@@ -213,8 +219,8 @@ const TestingForm = ()  => {
                 <div>
               &nbsp;
               </div>
-                <Grid container spacing={4}>
-                <Grid className = "jender" item md={300}>
+                <Grid container spacing={2}>
+                <Grid item xs={6} sm={3}>
                   <List component="nav" aria-label="gender">  
                     <ListItem
                       button
@@ -244,7 +250,7 @@ const TestingForm = ()  => {
                     ))}
                   </Menu>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={9}>
                 <TextField
                     variant="outlined"
                     name="Ethnicity"
