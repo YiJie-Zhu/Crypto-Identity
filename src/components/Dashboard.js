@@ -11,6 +11,7 @@ import "./Styles/Dashboard.css"
 import PFP from "./Images/pfp.jpg"
 import Web3 from 'web3'
 import PersonId from '../abis/PersonId.json'
+import ExitToApp from '@material-ui/icons/ExitToApp';
 
 
 
@@ -78,7 +79,7 @@ export default function Dashboard() {
 
     return (
       <>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" className="MyProfile">
           My Profile
           {/* <br/>
           <strong> Email: </strong> {currentUser.email}
@@ -120,16 +121,20 @@ export default function Dashboard() {
 
         </Typography>
         {error && <Alert severity = "error"> {error} </Alert>}
-        
+        <br/>
 
         <Grid container justify="center">
             <Grid item>
-              <Button onClick = {handleLogout}>
-                Log Out
-              </Button>
-              <Button >
-                TEST
-              </Button>
+            <Button
+        variant="contained"
+        color="secondary"
+        className="MButton"
+        startIcon={< ExitToApp/>}
+        onClick={handleLogout}
+        
+      >
+        Log Out
+      </Button>
             </Grid>
         </Grid>
       </>

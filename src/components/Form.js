@@ -178,7 +178,7 @@ const Form = () => {
           // encrpt: cipherText
         })
         .then(() => {
-          alert("Form has been submitted");
+          alert(`Form has been submitted, Token id is ${totalToken - 1}`);
           history.push("/");
         })
         .catch((error) => {
@@ -234,7 +234,7 @@ const Form = () => {
       // }
       const count = parseInt(num, 10)
 
-      setTotalToken(count)
+      setTotalToken(count - 1)
     }else{
       window.alert("contract not on this nework")
     }
