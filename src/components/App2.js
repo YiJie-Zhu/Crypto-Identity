@@ -36,12 +36,12 @@ class App extends Component {
       const contract = new web3.eth.Contract(abi, address)
       this.setState({contract: contract})
       const person = await contract.methods.names(1).call()
-      const num = await contract.methods.totalSupply.call()
+      const num = await contract.methods.tokenCounter.call()
       // for (var i = 1; i <= 5; i++){
       //   const person = await contract.methods.names(i - 1).call()
       //   this.setState({names: [...this.state.names, person]})
       // }
-      console.log(num)
+      console.log(parseInt(num, 10))
     }else{
       window.alert("contract not on this nework")
     }
