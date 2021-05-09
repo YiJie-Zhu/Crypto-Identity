@@ -1,3 +1,8 @@
 .jender{
     padding:0em;
 }
+
+.profileImage{
+    max-width: 500px;
+    margin: 8px;
+}

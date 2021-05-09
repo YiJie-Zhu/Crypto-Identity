@@ -64,10 +64,10 @@ const Page = ({count, emotion, handleCount}) => {
             console.log(error);
           },
           () => {
-            storage
-              .ref("images")
-              .child(blobImage.name)
-              .getDownloadURL()
+            // storage
+            //   .ref("images")
+            //   .child(blobImage.name)
+            //   .getDownloadURL()
           }
         );
       };

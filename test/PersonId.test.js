@@ -29,7 +29,7 @@ contract('PersonId', (accounts) => {
     
     describe('minting', async() => {
         it('creates a new token', async () => {
-            const result = await contract.mint("Jackie Zhu")
+            const result = await contract.mint("Jackie Zhu", "test")
             const totalSupply = contract.tokenCounter
             assert.equal(totalSupply, contract.tokenCounter)
         })
@@ -37,9 +37,9 @@ contract('PersonId', (accounts) => {
 
     describe('indexing', async()=>{
         it('list people', async()=>{
-            await contract.mint("Tony Huang")
-            await contract.mint("Mer Zhang")
-            await contract.mint("Ian Chow")
+            await contract.mint("Tony Huang", "test")
+            await contract.mint("Mer Zhang", "test")
+            await contract.mint("Ian Chow", "test")
             const totalSupply = contract.tokenCounter
 
             let people

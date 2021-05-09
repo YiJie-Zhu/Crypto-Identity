@@ -9,6 +9,9 @@ import {useHistory} from "react-router-dom"
 import {db} from "../firebase"
 import "./Styles/Dashboard.css"
 import PFP from "./Images/pfp.jpg"
+import Web3 from 'web3'
+import PersonId from '../abis/PersonId.json'
+
 
 
 export default function Dashboard() {
@@ -18,12 +21,14 @@ export default function Dashboard() {
     const [userData, setUserData] = useState([])
 
 
+
     const history = useHistory()
 
     async function handleLogout() {
         setError('')
 
         try {
+          logout()
             history.pushState('/login')
         } catch(error) {
             console.log(error)
@@ -34,24 +39,36 @@ export default function Dashboard() {
     async function getData(){
       const userRef = db.collection('UserInfo')
       console.log(currentUser.email)
-      const querySnap = await userRef.where('email', '==', currentUser.email).get()
-      let list = []
+      const querySnap = await userRef.where('email', '==', 'ttt@ttt.com').get()
+      let temp = []
       querySnap.forEach(doc => {
-        list.push(doc.data())
+        temp.push(doc.data())
       })
-      return list
+      return temp
     }
 
+  
     
 
-    useEffect( async () => {
-      let list = await getData()
-      console.log(list)
-      setUserData(list)
+    useEffect( () => {
+      let list
+      (async (list)=>{
+        const userRef = db.collection('UserInfo')
+      console.log(currentUser.email)
+      const querySnap = await userRef.where('email', '==', currentUser.email).get()
+      let temp = []
+      querySnap.forEach(doc => {
+        console.log(doc.data())
+        temp.push(doc.data())
+      })
+      console.log(temp)
+      setUserData(temp)
+      })();      
       setLoading(false)
     }, [])
 
-    if(loading){
+    if(loading || userData.length == 0){
+      
       return(<div>
         Getting Data
       </div>)
@@ -63,7 +80,7 @@ export default function Dashboard() {
       <>
         <Typography component="h1" variant="h5">
           My Profile
-          <br/>
+          {/* <br/>
           <strong> Email: </strong> {currentUser.email}
           <br/>
           <strong> Name: </strong> {userData[0]["firstName"] + ' ' + userData[0]["lastName"]}
@@ -73,15 +90,31 @@ export default function Dashboard() {
           <strong> Date of Birth: </strong> {userData[0]["dob"]}
           <br/>
           <strong> Sex: </strong> {userData[0]["sex"]}
+          <br/> */}
           <br/>
-          <div class="card">
+          <br/>
+          <div className="card">
             <img src={PFP} className="profile"/>
-            <h1>John Doe</h1>
-            <p class="title">Crypto Identification</p>
-            <p>Harvard University</p>
-            <div>
+            <h1>{userData[0]["firstName"] +" "+userData[0]["lastName"]}</h1>
+            <p className="title">Crypto Identification</p>
+            <p>{userData[0]["city"] + ", " + userData[0]["province"]}</p>
+            <div className="infoField">
+              <strong> Gender: </strong> Male
+            </div>
+            <div className="infoField">
+              <strong> Date of Birth: </strong> {userData[0]["dob"]}
+            </div>
+            <div className="infoField">
+              <strong> Address: </strong> {userData[0]["mailingAddress"]}
+            </div>
+            
+            <div className="infoField">
+              <strong> Phone Number: </strong> {userData[0]["phoneNumber"]}
+            </div>
+            <div className="infoField">
               <strong> Email: </strong> {currentUser.email}
             </div>
+            <br/>
             
           </div>
 
@@ -93,6 +126,9 @@ export default function Dashboard() {
             <Grid item>
               <Button onClick = {handleLogout}>
                 Log Out
+              </Button>
+              <Button >
+                TEST
               </Button>
             </Grid>
         </Grid>

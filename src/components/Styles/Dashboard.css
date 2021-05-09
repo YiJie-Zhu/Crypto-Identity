@@ -44,3 +44,7 @@
     object-fit: cover;
     object-position: 80% 30%;
   }
+
+  .infoField{
+    margin: 8px;
+  }
