@@ -13,7 +13,6 @@ const GoogleVision = () => {
   };
 
   if (count > 3) {
-    console.log("done");
     history.push("/form");
   }
   return (

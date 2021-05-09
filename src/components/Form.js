@@ -14,6 +14,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import Alert from "@material-ui/lab/Alert";
+import { storage } from "../firebase";
 
 import "./Form.css";
 
@@ -37,8 +39,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const optionssex = ["Male", "Female"];
-
 const optionsgender = ["Male", "Female", "Non-Binary", "Other"];
 
 const Form = () => {
@@ -55,7 +55,32 @@ const Form = () => {
   const [province, setProvince] = useState("");
   const [country, setCountry] = useState("");
   const [mailingAddress, setMailingAddress] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [image, setImage] = useState(null);
+  const [URL, setURL] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [error, setError] = useState("");
   const history = useHistory();
+
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(1),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: "100%",
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -74,44 +99,88 @@ const Form = () => {
     setAnchorEl(null);
   };
 
+  const handleChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+      setDisabled(false);
+    }
+  };
+
+  const handleUpload = () => {
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then((url) => {
+            setURL(url);
+          });
+      }
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    db.collection("UserInfo")
-      .add({
-        firstName: firstName,
-        otherName: otherName,
-        lastName: lastName,
-        familyNameAB: familyNameAB,
-        dob: dob,
-        phoneNumber: phoneNumber,
-        ethnicity: ethnicity,
-        gender: gender,
-        age: age,
-        city: city,
-        province: province,
-        country: country,
-        mailingAddress: mailingAddress,
-      })
-      .then(() => {
-        alert("Form has been submitted");
-        history.push("/");
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-    setfirstName("");
-    setOtherName("");
-    setLastName("");
-    setFamilyNameAB("");
-    setDOB("");
-    setPhoneNumber("");
-    setEthnicity("");
-    setGender("");
-    setAge("");
-    setCity("");
-    setProvince("");
-    setCountry("");
-    setMailingAddress("");
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      dob === "" ||
+      gender === "" ||
+      ethnicity === "" ||
+      age === "" ||
+      city === "" ||
+      province === "" ||
+      country === "" ||
+      photoUrl === ""
+    ) {
+      setError("Required Field(s) are incomplete");
+    } else {
+      db.collection("UserInfo")
+        .add({
+          firstName: firstName,
+          otherName: otherName,
+          lastName: lastName,
+          familyNameAB: familyNameAB,
+          dob: dob,
+          phoneNumber: phoneNumber,
+          ethnicity: ethnicity,
+          gender: gender,
+          age: age,
+          city: city,
+          province: province,
+          country: country,
+          mailingAddress: mailingAddress,
+          photoUrl: photoUrl,
+        })
+        .then(() => {
+          alert("Form has been submitted");
+          history.push("/");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+      setfirstName("");
+      setOtherName("");
+      setLastName("");
+      setFamilyNameAB("");
+      setDOB("");
+      setPhoneNumber("");
+      setEthnicity("");
+      setGender("");
+      setAge("");
+      setCity("");
+      setProvince("");
+      setCountry("");
+      setMailingAddress("");
+      setPhotoUrl("");
+    }
   };
 
   return (
@@ -121,6 +190,20 @@ const Form = () => {
         <Typography component="h1" variant="h4">
           Personal NFT Form
         </Typography>
+        {error && <Alert severity="error"> {error} </Alert>}
+        <div>&nbsp;</div>
+        <input type="file" onChange={handleChange} />
+        <img src={URL} />
+        <div>&nbsp;</div>
+        <Button
+          onClick={handleUpload}
+          variant="contained"
+          color="primary"
+          disabled={disabled}
+        >
+          {" "}
+          Upload Photo
+        </Button>
         <div>&nbsp;</div>
         <Typography component="h2" variant="h5" align="left">
           Applicant's Information
