@@ -48,3 +48,12 @@
   .infoField{
     margin: 8px;
   }
+
+  .MButton{
+    margin: 8px;
+    width: 200px;
+  }
+
+  .myProfile{
+    flex-grow: 1;
+  }

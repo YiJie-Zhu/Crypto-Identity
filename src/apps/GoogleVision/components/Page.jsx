@@ -126,10 +126,15 @@ const Page = ({count, emotion, handleCount, handleFacialEmotion}) => {
     }
 
     return (
+        <div>
+        <div className = "navbar">Crypto Identity</div>
         <div className = "PageContainer">
             {!imageSelected && (
-                <div>
-                <h1>Please make this face!</h1>
+            <div className = 'row'>
+                <div className = 'column'>
+                <h1 className = 'welcome'>Welcome</h1>
+                </div>
+                <div className = 'column'>
                 <h2>{emotionDisplay}</h2>
                 {!useWebcam && (
                     <div>
@@ -142,12 +147,14 @@ const Page = ({count, emotion, handleCount, handleFacialEmotion}) => {
                 )}
                 <h1>{count}/4</h1>
             </div>
+            </div>
             )}
             {imageSelected && image && (
                 <div>
                     <EmotionDetection image = {image} emotion = {emotion} emotionMatch = {emotionMatch}/>
                 </div>
             )}
+        </div>
         </div>
     )
 }

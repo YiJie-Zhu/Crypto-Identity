@@ -11,6 +11,9 @@ import Container from '@material-ui/core/Container';
 import {useAuth} from '../contexts/AuthContext'
 import {useHistory} from "react-router-dom"
 import {withRouter} from "react-router-dom"
+import Logo from "./Images/logo.jpg"
+import { ClassOutlined } from '@material-ui/icons';
+import "./Styles/Login.css"
 
 var CryptoJS = require("crypto-js");
 
@@ -33,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    logo: {
+      height: 'auto',
+      width: '390px',
+      maxHeight: '600px',
+      maxWidth: '600px'
+    },
+    
   }));
 
 const Login = () => {
@@ -73,7 +83,11 @@ const Login = () => {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+      <div className="large">
+
+      
+        <Container component="main" maxWidth="xs" >
+          <img src={Logo} alt="Text" className={classes.logo}></img>
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
@@ -163,6 +177,7 @@ const Login = () => {
         <Button onClick={test}>Test</Button>
       </div> */}
     </Container>
+    </div>
       );
 }
 
