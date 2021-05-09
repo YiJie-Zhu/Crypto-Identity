@@ -4,6 +4,12 @@
   "description": "An Ethereum Marketplace",
   "author": "gregory@dappuniversity.com",
   "dependencies": {
+    "@google-cloud/vision": "^2.3.1",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
+    "@material-ui/pickers": "^3.3.10",
+    "axios": "^0.21.1",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-es2015": "6.24.1",
@@ -14,11 +20,15 @@
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "chai-bignumber": "3.0.0",
+    "firebase": "^8.5.0",
     "react": "16.8.4",
     "react-bootstrap": "1.0.0-beta.5",
     "react-dom": "16.8.4",
+    "react-html5-camera-photo": "^1.5.4",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "2.1.3",
     "truffle": "^5.0.5",
+    "web-vitals": "^1.1.2",
     "web3": "1.0.0-beta.55"
   },
   "scripts": {
