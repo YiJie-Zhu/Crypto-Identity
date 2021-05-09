@@ -13,6 +13,7 @@ const Page = ({count, emotion, handleCount}) => {
     const [imageSelected, setImageSelected] = useState(false);
     const [image, setImage] = useState();
     const [blobImage, setBlobImage] = useState();
+    const [dataUri, setDataUri] = useState();
     const [emotionDisplay, setEmotionDisplay] = useState();
 
     useEffect(() => {
@@ -47,6 +48,7 @@ const Page = ({count, emotion, handleCount}) => {
 
     useEffect(() => {
         if (blobImage != undefined){
+            console.log(blobImage);
             handleUpload();
         }
     }, [blobImage])
@@ -56,7 +58,13 @@ const Page = ({count, emotion, handleCount}) => {
     }
 
     const handleUpload = () => {
-        const uploadTask = storage.ref(`images/${blobImage.name}`).put(blobImage);
+        let uploadTask;
+        const webcam = `WEBCAM_PHOTO ${Math.random()}`
+        if (dataUri){
+            uploadTask = storage.ref(`images/${webcam}`).putString(dataUri, 'data_url');
+        }else {
+            uploadTask = storage.ref(`images/${blobImage.name}`).put(image);
+        }
         uploadTask.on(
           "state_changed",
           (snapshot) => {},
@@ -64,25 +72,31 @@ const Page = ({count, emotion, handleCount}) => {
             console.log(error);
           },
           () => {
-            // storage
-            //   .ref("images")
-            //   .child(blobImage.name)
-            //   .getDownloadURL()
+              if (dataUri) {
+                storage
+                .ref("images")
+                .child(webcam)
+                .getDownloadURL()
+              }else {
+                storage
+                .ref("images")
+                .child(blobImage.name)
+                .getDownloadURL()
+              }
           }
         );
       };
 
     const handleImageSelector = async (event) => {
         setBlobImage(event.target.files[0]);
-        console.log(blobImage);
 		setImage(await faceapi.bufferToImage(event.target.files[0]));
 		setImageSelected(true);
 	};
 
     const handleWebcamPhoto = async(dataUri) => {
+        setDataUri(dataUri);
         const blobPhoto = dataUriToBlob(dataUri);
         setBlobImage(blobPhoto);
-        console.log(blobImage);
         setImage(await faceapi.bufferToImage(blobPhoto));
         setImageSelected(true);
     }
@@ -96,10 +110,12 @@ const Page = ({count, emotion, handleCount}) => {
             setImageSelected(false);
             setUseWebcam(false);
             setImage(null);
+            setDataUri(null);
         }else {
             setImageSelected(false);
             setUseWebcam(false);
             setImage(null);
+            setDataUri(null);
         }
     }
 

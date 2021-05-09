@@ -32,6 +32,8 @@ const EmotionDetection = ({image, emotion, emotionMatch}) => {
             setAccurate(true);
           }else if (detections.expressions.surprised > 0.8 && emotion === 'surprised'){
             setAccurate(true);
+          }else {
+            setAccurate(false);
           }
         }
         else {
