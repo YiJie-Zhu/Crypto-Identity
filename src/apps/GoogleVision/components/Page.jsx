@@ -5,12 +5,14 @@ import ImageSelector from './ImageSelector'
 import '../styles/Page.css'
 import EmotionDetection from './EmotionDetection'
 import * as faceapi from 'face-api.js'
+import { storage } from "../../../firebase";
 
 
 const Page = ({count, emotion, handleCount}) => {
     const [useWebcam, setUseWebcam] = useState(false);
     const [imageSelected, setImageSelected] = useState(false);
     const [image, setImage] = useState();
+    const [blobImage, setBlobImage] = useState();
     const [emotionDisplay, setEmotionDisplay] = useState();
 
     useEffect(() => {
@@ -44,20 +46,44 @@ const Page = ({count, emotion, handleCount}) => {
     }
 
     useEffect(() => {
-        console.log(image);
-    }, [image])
+        if (blobImage != undefined){
+            handleUpload();
+        }
+    }, [blobImage])
 
     const handleClick = () => {
         setUseWebcam(true);
     }
 
+    const handleUpload = () => {
+        const uploadTask = storage.ref(`images/${blobImage.name}`).put(blobImage);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {},
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            storage
+              .ref("images")
+              .child(blobImage.name)
+              .getDownloadURL()
+          }
+        );
+      };
+
     const handleImageSelector = async (event) => {
+        setBlobImage(event.target.files[0]);
+        console.log(blobImage);
 		setImage(await faceapi.bufferToImage(event.target.files[0]));
 		setImageSelected(true);
 	};
 
     const handleWebcamPhoto = async(dataUri) => {
-        setImage(await faceapi.bufferToImage(dataUriToBlob(dataUri)));
+        const blobPhoto = dataUriToBlob(dataUri);
+        setBlobImage(blobPhoto);
+        console.log(blobImage);
+        setImage(await faceapi.bufferToImage(blobPhoto));
         setImageSelected(true);
     }
 

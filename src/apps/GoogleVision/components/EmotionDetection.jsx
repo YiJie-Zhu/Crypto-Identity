@@ -23,20 +23,21 @@ const EmotionDetection = ({image, emotion, emotionMatch}) => {
 
       const startCheck = async () => {
         const detections = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceExpressions();
-        if (detections.expressions.sad > 0.8 && emotion === 'sad'){
-          setAccurate(true);
-        }else if (detections.expressions.neutral > 0.8 && emotion === 'neutral'){
-          setAccurate(true);
-        }else if (detections.expressions.happy > 0.8 && emotion === 'happy'){
-          setAccurate(true);
-        }else if (detections.expressions.surprised > 0.8 && emotion === 'surprised'){
-          setAccurate(true);
+        if (detections){
+          if (detections.expressions.sad > 0.8 && emotion === 'sad'){
+            setAccurate(true);
+          }else if (detections.expressions.neutral > 0.8 && emotion === 'neutral'){
+            setAccurate(true);
+          }else if (detections.expressions.happy > 0.8 && emotion === 'happy'){
+            setAccurate(true);
+          }else if (detections.expressions.surprised > 0.8 && emotion === 'surprised'){
+            setAccurate(true);
+          }
         }
         else {
           console.log('yo');
           setAccurate(false);
         }
-        console.log(detections.expressions);
       }
       const notify = (accurate) => {
         if (accurate){
