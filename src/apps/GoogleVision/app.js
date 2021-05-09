@@ -1,10 +1,26 @@
+import React, { useState } from "react";
 import Page from "./components/Page";
-import React, { useState, useEffect } from 'react'
+import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const GoogleVision = () => {
-  const emotions = ["Joy", "Sorrow", "Anger", "Surprise"];
+  let history = useHistory();
+  const emotions = ["happy", "neutral", "sad", "surprised"];
+  const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+  const [count, setCount] = useState(0);
+  const handleCount = () => {
+    setCount(count + 1);
+  };
 
-  return <Page emotion={"Anger😠"} />;
+  if (count > 3) {
+    console.log("done");
+    history.push("/form");
+  }
+  return (
+    <div>
+      <Page count={count} emotion={randomEmotion} handleCount={handleCount} />
+    </div>
+  );
 };
 
-export default GoogleVision;
+export default withRouter(GoogleVision);
