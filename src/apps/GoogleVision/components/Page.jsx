@@ -129,26 +129,30 @@ const Page = ({count, emotion, handleCount, handleFacialEmotion}) => {
         <div>
         <div className = "navbar">Crypto Identity</div>
         <div className = "PageContainer">
-            {!imageSelected && (
+            {!imageSelected && !useWebcam &&  (
             <div className = 'row'>
-                <div className = 'column'>
+                <div className = 'column-left'>
                 <h1 className = 'welcome'>Welcome</h1>
+                <h2 >Thank you for signing up! Please take a photo of <strong>yourself</strong> performing the expression on the right using a webcam or uploading an image  </h2>
                 </div>
                 <div className = 'column'>
-                <h2>{emotionDisplay}</h2>
+                <h3 className = 'emotion'>{emotionDisplay}</h3>
                 {!useWebcam && (
                     <div>
                         <WebCamButton onClick = {handleClick}/>
                         <ImageSelector onChange = {handleImageSelector}/>  
                     </div>
                 )}
-                {useWebcam && (
-                    <WebCam onClick = {handleWebcamPhoto}></WebCam>
-                )}
                 <h1>{count}/4</h1>
             </div>
             </div>
             )}
+            {!imageSelected && useWebcam && (
+                <div>
+                    <WebCam onClick = {handleWebcamPhoto}></WebCam>
+                    <h1>{count}/4</h1>
+                    </div>
+                )}
             {imageSelected && image && (
                 <div>
                     <EmotionDetection image = {image} emotion = {emotion} emotionMatch = {emotionMatch}/>

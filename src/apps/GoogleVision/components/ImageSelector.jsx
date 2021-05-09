@@ -5,6 +5,8 @@ export default function ImageSelector({onChange}) {
     return (
         <div>
             <Button
+            size = 'large'
+            color = 'primary'
                 variant="contained"
                 component="label"
                 >
