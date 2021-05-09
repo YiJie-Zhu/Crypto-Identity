@@ -8,7 +8,7 @@ import * as faceapi from 'face-api.js'
 import { storage } from "../../../firebase";
 
 
-const Page = ({count, emotion, handleCount}) => {
+const Page = ({count, emotion, handleCount, handleFacialEmotion}) => {
     const [useWebcam, setUseWebcam] = useState(false);
     const [imageSelected, setImageSelected] = useState(false);
     const [image, setImage] = useState();
@@ -77,11 +77,17 @@ const Page = ({count, emotion, handleCount}) => {
                 .ref("images")
                 .child(webcam)
                 .getDownloadURL()
+                .then((url)=> {
+                    handleFacialEmotion(url);
+                })
               }else {
                 storage
                 .ref("images")
                 .child(blobImage.name)
                 .getDownloadURL()
+                .then((url)=> {
+                    handleFacialEmotion(url);
+                })
               }
           }
         );

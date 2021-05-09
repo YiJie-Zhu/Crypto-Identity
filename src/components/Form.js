@@ -16,9 +16,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Alert from "@material-ui/lab/Alert";
 import { storage } from "../firebase";
-import Web3 from 'web3'
-import PersonId from '../abis/PersonId.json'
-import {useAuth} from "../contexts/AuthContext"
+import Web3 from "web3";
+import PersonId from "../abis/PersonId.json";
+import { useAuth } from "../contexts/AuthContext";
 
 import "./Form.css";
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const optionsgender = ["Male", "Female", "Non-Binary", "Other"];
 
-const Form = () => {
+const Form = (facialEmotionArr) => {
   const [firstName, setfirstName] = useState("");
   const [otherName, setOtherName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -66,10 +66,10 @@ const Form = () => {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState("");
 
-  const [account, setAccount] = useState('')
-  const [contract, setContract] = useState(null)
-  const [totalToken, setTotalToken] = useState(0)
-  const {currentUser, logout} = useAuth()
+  const [account, setAccount] = useState("");
+  const [contract, setContract] = useState(null);
+  const [totalToken, setTotalToken] = useState(0);
+  const { currentUser, logout } = useAuth();
 
   const history = useHistory();
 
@@ -139,7 +139,7 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(URL)
+    console.log(URL);
     if (
       firstName === "" ||
       lastName === "" ||
@@ -154,10 +154,25 @@ const Form = () => {
     ) {
       setError("Required Field(s) are incomplete");
     } else {
-    var data = [{id: totalToken, firstName: firstName, lastName: lastName, dob: dob, gender: gender, age: age, city: city, province: province, country: country}];
-    var cipherText = CryptoJS.AES.encrypt(JSON.stringify(data), 'my-secret-key@123').toString();
-    console.log(cipherText)
-    mint(firstName, cipherText);
+      var data = [
+        {
+          id: totalToken,
+          firstName: firstName,
+          lastName: lastName,
+          dob: dob,
+          gender: gender,
+          age: age,
+          city: city,
+          province: province,
+          country: country,
+        },
+      ];
+      var cipherText = CryptoJS.AES.encrypt(
+        JSON.stringify(data),
+        "my-secret-key@123"
+      ).toString();
+      console.log(cipherText);
+      mint(firstName, cipherText);
       db.collection("UserInfo")
         .add({
           firstName: firstName,
@@ -174,6 +189,7 @@ const Form = () => {
           country: country,
           mailingAddress: mailingAddress,
           photoUrl: URL,
+          facialEmotionArr: facialEmotionArr.facialEmotionArr,
           email: currentUser.email,
           // encrpt: cipherText
         })
@@ -201,95 +217,91 @@ const Form = () => {
     }
   };
 
-  async function loadWeb3(){
+  async function loadWeb3() {
     if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum)
-      await window.ethereum.enable()
-    }
-    else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider)
-    }
-    else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
     }
   }
 
-  async function loadBlockchainData(){
-    const web3 = window.web3
-    const accounts = await web3.eth.getAccounts()
-    console.log(accounts[0])
-    setAccount(accounts[0])
-    const networkId = await web3.eth.net.getId()
-    const networkData = PersonId.networks[networkId]
-    if(networkData){
-      const abi = PersonId.abi
-      const address = networkData.address
-      const contract = new web3.eth.Contract(abi, address)
-      setContract(contract)
-      const person = await contract.methods.names(1).call()
-      const num = await contract.methods.tokenCounter.call()
+  async function loadBlockchainData() {
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    console.log(accounts[0]);
+    setAccount(accounts[0]);
+    const networkId = await web3.eth.net.getId();
+    const networkData = PersonId.networks[networkId];
+    if (networkData) {
+      const abi = PersonId.abi;
+      const address = networkData.address;
+      const contract = new web3.eth.Contract(abi, address);
+      setContract(contract);
+      const person = await contract.methods.names(1).call();
+      const num = await contract.methods.tokenCounter.call();
       // for (var i = 1; i <= 5; i++){
       //   const person = await contract.methods.names(i - 1).call()
       //   this.setState({names: [...this.state.names, person]})
       // }
-      const count = parseInt(num, 10)
+      const count = parseInt(num, 10);
 
-      setTotalToken(count)
-    }else{
-      window.alert("contract not on this nework")
+      setTotalToken(count);
+    } else {
+      window.alert("contract not on this nework");
     }
   }
 
-
-  function mint(person, data){
-    contract.methods.mint(person, data).send({from: account})
-    let num = contract.methods.tokenCounter.call()
-    console.log("ran")
+  function mint(person, data) {
+    contract.methods.mint(person, data).send({ from: account });
+    let num = contract.methods.tokenCounter.call();
+    console.log("ran");
   }
 
-
-  useEffect( () => {
+  useEffect(() => {
     (async () => {
       if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum)
-        await window.ethereum.enable()
-      }
-      else if (window.web3) {
-        window.web3 = new Web3(window.web3.currentProvider)
-      }
-      else {
-        window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+        window.web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+      } else if (window.web3) {
+        window.web3 = new Web3(window.web3.currentProvider);
+      } else {
+        window.alert(
+          "Non-Ethereum browser detected. You should consider trying MetaMask!"
+        );
       }
     })();
     (async () => {
-      const web3 = window.web3
-    const accounts = await web3.eth.getAccounts()
-    setAccount(accounts[0])
-    const networkId = await web3.eth.net.getId()
-    const networkData = PersonId.networks[networkId]
-    if(networkData){
-      const abi = PersonId.abi
-      const address = networkData.address
-      const contract = new web3.eth.Contract(abi, address)
-      setContract(contract)
-      const person = await contract.methods.names(1).call()
-      const num = await contract.methods.tokenCounter.call()
-      // for (var i = 1; i <= 5; i++){
-      //   const person = await contract.methods.names(i - 1).call()
-      //   this.setState({names: [...this.state.names, person]})
-      // }
-      const count = parseInt(num, 10)
-      console.log(count)
-      setTotalToken(count)
-    }else{
-      window.alert("contract not on this nework")
-    }
+      const web3 = window.web3;
+      const accounts = await web3.eth.getAccounts();
+      setAccount(accounts[0]);
+      const networkId = await web3.eth.net.getId();
+      const networkData = PersonId.networks[networkId];
+      if (networkData) {
+        const abi = PersonId.abi;
+        const address = networkData.address;
+        const contract = new web3.eth.Contract(abi, address);
+        setContract(contract);
+        const person = await contract.methods.names(1).call();
+        const num = await contract.methods.tokenCounter.call();
+        // for (var i = 1; i <= 5; i++){
+        //   const person = await contract.methods.names(i - 1).call()
+        //   this.setState({names: [...this.state.names, person]})
+        // }
+        const count = parseInt(num, 10);
+        console.log(count);
+        setTotalToken(count);
+      } else {
+        window.alert("contract not on this nework");
+      }
     })();
     // await loadWeb3()
     // await loadBlockchainData()
-
-  }, [])
-
+  }, []);
 
   return (
     <Container component="main" maxWidth="sm">
@@ -301,7 +313,7 @@ const Form = () => {
         {error && <Alert severity="error"> {error} </Alert>}
         <div>&nbsp;</div>
         <input type="file" onChange={handleChange} />
-        <img src={URL} className="profileImage"/>
+        <img src={URL} className="profileImage" />
         <div>&nbsp;</div>
         <Button
           onClick={handleUpload}
