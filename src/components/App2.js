@@ -35,7 +35,7 @@ class App extends Component {
       const address = networkData.address
       const contract = new web3.eth.Contract(abi, address)
       this.setState({contract: contract})
-      const person = await contract.methods.names(0).call()
+      const person = await contract.methods.names(1).call()
       // for (var i = 1; i <= 5; i++){
       //   const person = await contract.methods.names(i - 1).call()
       //   this.setState({names: [...this.state.names, person]})

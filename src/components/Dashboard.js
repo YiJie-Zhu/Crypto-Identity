@@ -25,6 +25,8 @@ export default function Dashboard() {
         }
     }
 
+    console.log(currentUser)
+
     return (
       <>
         <Typography component="h1" variant="h5">

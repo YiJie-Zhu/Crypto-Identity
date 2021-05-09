@@ -121,7 +121,7 @@ const ForgotPassword = () => {
           <Grid container justify="center">
             <Grid item>
               <Link href="/login">
-                Log in
+                Already have an account?
               </Link>
             </Grid>
           </Grid>
