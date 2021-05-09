@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import * as faceapi from 'face-api.js'
 import {toast} from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
+import '../styles/EmotionDetection.css'
    
 toast.configure()
 
@@ -63,8 +64,9 @@ const EmotionDetection = ({image, emotion, emotionMatch}) => {
       }, [accurate])
 
     return (
-      
-      <div>Loading results</div>
+      <div className = 'center'>
+        <div className="loader"></div>
+      </div>
     )
 }
 
