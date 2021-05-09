@@ -1,5 +1,5 @@
 import React from "react";
-// import Signup from "./signup";
+import { useState } from "react";
 import Signup from "./signup";
 import GoogleVision from "../apps/GoogleVision/app";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -11,6 +11,10 @@ import ForgotPassword from "./ForgotPassword";
 import Form from "./Form";
 
 function App() {
+  // const [facialEmotionArr, setfacialEmotionArr] = useState([]);
+  // const handleFacialEmotion = () => {
+
+  // }
   return (
     <Router>
       <AuthProvider>
