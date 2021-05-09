@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {db} from "../firebase"
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,14 +9,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useHistory} from "react-router-dom"
 import {withRouter} from "react-router-dom"
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 
+import './Form.css'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(8),
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
+      alignItems: 'left',
     },
     avatar: {
       margin: theme.spacing(1),
@@ -31,6 +37,18 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+  const optionssex = [
+    'Male',
+    'Female',
+  ];
+
+  const optionsgender = [
+    'Male',
+    'Female',
+    'Non-Binary', 
+    'Other'
+  ];
+
 const TestingForm = ()  => {
     const [firstName, setfirstName] = useState("")
     const [otherName, setOtherName] = useState("")
@@ -38,7 +56,7 @@ const TestingForm = ()  => {
     const [familyNameAB, setFamilyNameAB] = useState("")
     const [dob, setDOB] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
-    const [sex, setSex] = useState("")
+    const [ethnicity, setEthnicity] = useState("")
     const [gender, setGender] = useState("")
     const [age, setAge] = useState("")
     const [city, setCity] = useState("")
@@ -48,6 +66,21 @@ const TestingForm = ()  => {
     const history = useHistory()
 
     const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [selectedGender, setSelectedGender] = React.useState(1);
+
+    const handleClickListItemGender = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleGenderItemClick = (event, index) => {
+      setSelectedGender(index);
+      setAnchorEl(null);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -58,7 +91,7 @@ const TestingForm = ()  => {
             familyNameAB: familyNameAB,
             dob: dob,
             phoneNumber: phoneNumber,
-            sex: sex,
+            ethnicity: ethnicity,
             gender: gender,
             age: age,
             city: city,
@@ -79,7 +112,7 @@ const TestingForm = ()  => {
         setFamilyNameAB('')
         setDOB('')
         setPhoneNumber('')
-        setSex('')
+        setEthnicity('')
         setGender('')
         setAge('')
         setCity('')
@@ -89,65 +122,75 @@ const TestingForm = ()  => {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Log In
+          <Typography component="h1" variant="h4">
+            Personal NFT Form
           </Typography>
+          <div>&nbsp;</div>
+          <Typography component="h2" variant="h5" align = 'left'>
+          Applicant's Information
+        </Typography>
           <form className={classes.form} noValidate onSubmit = {handleSubmit}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
+            <Grid container spacing={4}>
+                <Grid item md={300}>
                 <TextField
                     variant="outlined"
                     required
-                    fullWidth
                     id="firstName"
                     label="First Name"
                     name="firstName"
                     onChange={(e) => setfirstName(e.target.value)}
                 />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item md={100}>
                 <TextField
                     variant="outlined"
-                    fullWidth
                     name="otherName"
                     label="Other/Preferred Names"
                     id="otherName"
                     onChange={(e) => setOtherName(e.target.value)}
                 />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item md={300}>
                 <TextField
                     variant="outlined"
                     required
-                    fullWidth
                     name="lastName"
                     label="Last Name"
                     id="lastName"
                     onChange={(e) => setLastName(e.target.value)}
                 />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item md={300}>
                 <TextField
                     variant="outlined"
-                    fullWidth
                     name="familyNameAB"
                     label="Family Name at Birth"
                     id="familyNameAB"
                     onChange={(e) => setFamilyNameAB(e.target.value)}
                 />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item md={100}>
                 <TextField
                     variant="outlined"
                     required
-                    fullWidth
                     name="dob"
                     label="Date of Birth"
                     id="dob"
+                    helperText='MM/DD/YYYY'
                     onChange={(e) => setDOB(e.target.value)}
+                />
+                </Grid>
+                <Grid item md={100}>
+                <TextField
+                    variant="outlined"
+                    required
+                    name="age"
+                    label="Age"
+                    id="age"
+                    onChange={(e) => setAge(e.target.value)}
                 />
                 </Grid>
                 <Grid item xs={12}>
@@ -160,39 +203,65 @@ const TestingForm = ()  => {
                     onChange={(e) => setPhoneNumber(e.target.value)}
                 />
                 </Grid>
-                <Grid item xs={12}>
-                <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="sex"
-                    label="Sex"
-                    id="sex"
-                    onChange={(e) => setSex(e.target.value)}
-                />
+                </Grid>
+                <div>
+              &nbsp;
+              </div>
+                <Typography component="h2" variant="h5" align = 'left'>
+                  Gender and Ethnicity
+                </Typography>
+                <div>
+              &nbsp;
+              </div>
+                <Grid container spacing={4}>
+                <Grid className = "jender" item md={300}>
+                  <List component="nav" aria-label="gender">  
+                    <ListItem
+                      button
+                      aria-haspopup="true"
+                      aria-label="Gender"
+                      onClick={handleClickListItemGender}
+                    >
+                      <ListItemText primary="Gender" secondary={optionsgender[selectedGender]} />
+                    </ListItem>
+                  </List>
+                  <Menu
+                  
+                    id="gender-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    {optionsgender.map((option, index) => (
+                      <MenuItem
+                        key={option}
+                        selected={index === selectedGender}
+                        onClick={(event) => handleGenderItemClick(event, index)}
+                      >
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Menu>
                 </Grid>
                 <Grid item xs={12}>
                 <TextField
                     variant="outlined"
-                    required
+                    name="Ethnicity"
+                    label="Ethnicity"
+                    id="ethnicity"
                     fullWidth
-                    name="gender"
-                    label="Gender"
-                    id="gender"
-                    onChange={(e) => setGender(e.target.value)}
+                    onChange={(e) => setEthnicity(e.target.value)}
                 />
                 </Grid>
-                <Grid item xs={12}>
-                <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    name="age"
-                    label="Age"
-                    id="age"
-                    onChange={(e) => setAge(e.target.value)}
-                />
                 </Grid>
+                <Typography component="h2" variant="h5" align = 'left'>
+                  Applicant Current and Birth Location
+                </Typography>
+                <div>
+              &nbsp;
+              </div>
+                <Grid container spacing={4}>
                 <Grid item xs={12}>
                 <TextField
                     variant="outlined"
@@ -236,7 +305,6 @@ const TestingForm = ()  => {
                     onChange={(e) => setMailingAddress(e.target.value)}
                 />
                 </Grid>
-          </Grid>
           <Button
             type="submit"
             fullWidth
@@ -245,8 +313,9 @@ const TestingForm = ()  => {
             className={classes.submit}
             onSubmit = {handleSubmit}
           >
-            Log In
+            Submit Form
           </Button>
+          </Grid>
         </form>
       </div>
     </Container>
