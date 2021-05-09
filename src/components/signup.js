@@ -55,18 +55,13 @@ const Signup = () => {
             setError('')
             setLoading(true)
             await signup(emailRef.current.value, passwordRef.current.value)
-            history.pushState("/")
+            history.push("/testingform")
         } catch(error) {
             console.log(error)
             setError("Failed to create an account")
         }
         setLoading(false)
     }
-    
-    // "@material-ui/core": "5.0.0-alpha.24",
-    // "@material-ui/icons": "^4.11.2",
-    // "@material-ui/lab": "5.0.0-alpha.24",
-
     return (
         <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -77,31 +72,6 @@ const Signup = () => {
         {error && <Alert severity = "error"> {error} </Alert>}
         <form className={classes.form} noValidate onSubmit = {handleSubmit}>
           <Grid container spacing={2}>
-            {/* <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                ref = {firstnameRef}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                ref = {lastnameRef}
-              />
-            </Grid> */}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

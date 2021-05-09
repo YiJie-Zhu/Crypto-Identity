@@ -12,6 +12,8 @@ import {useAuth} from '../contexts/AuthContext'
 import {useHistory} from "react-router-dom"
 import {withRouter} from "react-router-dom"
 
+var CryptoJS = require("crypto-js");
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -45,6 +47,15 @@ const Login = () => {
     const [loading, setLoading] = useState(false)
     
     let history = useHistory()
+
+    const test = () => {
+      var data = [{id: 1, firstName: "Jackie", lastName: "Zhu", address: "23 Champagne Crt", gender: "Male", age: 20}];
+      var cipherText = CryptoJS.AES.encrypt(JSON.stringify(data), 'my-secret-key@123').toString();
+      console.log(cipherText)
+      var bytes = CryptoJS.AES.decrypt(cipherText, 'my-secret-key@123');
+      var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      console.log(decryptedData);
+    }
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -148,6 +159,9 @@ const Login = () => {
           </Grid>
         </form>
       </div>
+      {/* <div>
+        <Button onClick={test}>Test</Button>
+      </div> */}
     </Container>
       );
 }
