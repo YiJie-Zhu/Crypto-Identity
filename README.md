@@ -30,7 +30,7 @@ await contract.mint("Name1")
 await contract.mint("Name2")
 ```
 
-Retreive Firebase APi key and paste it in a new file called ```.env.local``` in th emain directory
+Retreive Firebase APi key and paste it in a new file called ```.env.local``` in the main directory
 
 ```
 npm start
@@ -42,34 +42,4 @@ Crypto Identity allows a user to create a digital identity that they can use whe
 
 Once all this information is gathered, the user receives a prompt from their digital crypto wallet that their identification is being minted as an NFT. Their personal NFT stores their first name. and an encrypted version of all the private information they filled out in the form. Since our NFT's are stored on a blockchain, the IDs would be widely available for employers, financial institutions, and government agencies to verify a user's information. It also reduces the likelihood of theft or forgery due to the secure nature of NFT's as well as the lack of a physical ID.
 
-# Get Started
 
-```
-git clone https://github.com/YiJie-Zhu/IDs-as-NFT.git
-
-//go to a general directory (not this folder's)]
-npm install -g truffle
-
-//go to folder directory
-npm install
-
-//After npm finish installing
-truffle test
-
-//if all test passes
-truffle console
-
-contract = await PersonId.deployed()
-
-await contract.mint("Name1")
-
-await contract.mint("Name2")
-
-//ctlr-c 2 times
-
-//get API key from fb chat and put in .env.local file in name directory
-
-npm start
-
-
-```
